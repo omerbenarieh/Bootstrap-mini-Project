@@ -1,1 +1,23 @@
+::placeholder {
+  font-size: 17px;
+}
 
+body {
+  background-color: #dde6ed;
+}
+.form-select {
+  height: 50px;
+  font-size: 17px;
+  font-family: Arial;
+}
+
+.form-label {
+  font-size: 50px;
+  text-align: center;
+}
+
+.game-board {
+  width: 500px;
+  height: 500px;
+  background: lightblue;
+}

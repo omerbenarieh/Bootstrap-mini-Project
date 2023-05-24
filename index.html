@@ -20,11 +20,47 @@
     <title>Memory Game</title>
   </head>
   <body>
+    <!-- Main Container -->
+    <div class="container d-flex justify-content-sm-around align-items-center">
+      <!-- Form -->
+      <form>
+        <div class="mb-4">
+          <!-- Label -->
+          <label for="username" class="form-label display-3 d-block p-3">
+            Username</label
+          >
+          <!-- Username -->
+          <input
+            type="text"
+            class="form-control text-center p-3 mb-3"
+            id="username"
+            placeholder="Enter Your Name"
+          />
+        </div>
+
+        <!--Choose how many pairs  -->
+        <div>
+          <select class="form-select text-center">
+            <option selected>10 Pairs</option>
+            <option>20 Pairs</option>
+            <option>30 Pairs</option>
+          </select>
+        </div>
+
+        <!-- Start Game Button -->
+        <div class="m-5 text-center">
+          <a href="#">
+            <button type="button" class="btn btn-lg btn-success p-3">
+              Click To Start
+            </button>
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Game Board -->
+    <div class="container game-board"></div>
     <!-- Scripts -->
-    <h1>Omer</h1>
-    <script>
-      $('h1').hide();
-    </script>
     <script src="script.js"></script>
   </body>
 </html>

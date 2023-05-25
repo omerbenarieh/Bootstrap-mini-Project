@@ -39,12 +39,18 @@
         </div>
 
         <!--Choose how many pairs  -->
-        <div>
-          <select class="form-select text-center">
-            <option selected>10 Pairs</option>
-            <option>20 Pairs</option>
-            <option>30 Pairs</option>
-          </select>
+        <div class="d-flex justify-content-center align-items-center">
+          <label for="pairs" class="display-6">Pairs (5-30):</label>
+
+          <input
+            type="number"
+            id="pairs"
+            name="pairs"
+            min="5"
+            max="30"
+            value="15"
+            class="text-center pairs-input"
+          />
         </div>
 
         <!-- Start Game Button -->

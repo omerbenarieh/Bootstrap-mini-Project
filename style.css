@@ -18,6 +18,8 @@ body {
 
 #game-board {
   background: lightblue;
+  max-width: 500px;
+  max-height: 550px;
 }
 
 .hidden {

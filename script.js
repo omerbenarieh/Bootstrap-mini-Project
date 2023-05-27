@@ -1,5 +1,5 @@
 // Make sure that document is ready before manipulating the DOM.
-// $('#board-container').hide();
+$('#board-container').hide();
 $(document).ready(function () {
   // Varibales declarations
   const startBtn = $('#start');
@@ -26,9 +26,9 @@ $(document).ready(function () {
 
     startTimer(updateTimer);
     loginContainer.slideUp('fast');
-    boardContainer.slideDown('slow');
     $('#name').text(`Good Luck ${nameInserted}!`);
     createBoard(numOfPairs);
+    boardContainer.slideDown('slow');
     clearInputs();
   });
 
@@ -94,7 +94,7 @@ $(document).ready(function () {
   // Create Board:
 
   const createBoard = numOfPairs => {
-    for (let i = 0; i < 21; i++) {
+    for (let i = 0; i < 20; i++) {
       const img = document.createElement('img');
       img.src = `./Cards/card-${i}.jpeg`;
       img.width = 100;

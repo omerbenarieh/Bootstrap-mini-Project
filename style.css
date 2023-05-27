@@ -16,9 +16,7 @@ body {
   text-align: center;
 }
 
-.game-board {
-  width: 500px;
-  height: 500px;
+#game-board {
   background: lightblue;
 }
 
@@ -47,4 +45,8 @@ body {
   font-size: 30px;
   height: 40px;
   color: #545b77;
+}
+
+.img-div {
+  display: inline-block;
 }

@@ -1,5 +1,5 @@
 // Make sure that document is ready before manipulating the DOM.
-$('#board-container').hide();
+// $('#board-container').hide();
 $(document).ready(function () {
   // Varibales declarations
   const startBtn = $('#start');
@@ -8,17 +8,27 @@ $(document).ready(function () {
   const exitBtn = $('#exit');
   const loginContainer = $('#login-container');
   const boardContainer = $('#board-container');
+  const gameBoard = $('#game-board');
 
   // Start Game Button
   startBtn.click(e => {
     e.preventDefault();
-    if (userName.val().length === 0 || pairs.val().length === 0) {
+    const nameInserted = userName.val();
+    const numOfPairs = pairs.val();
+    if (
+      nameInserted.length === 0 ||
+      pairs.val().length === 0 ||
+      numOfPairs < 2 ||
+      numOfPairs > 21
+    ) {
       return alert('Please enter a valid name and valid number of Pairs.');
     }
+
     startTimer(updateTimer);
     loginContainer.slideUp('fast');
     boardContainer.slideDown('slow');
-    $('#name').text(`Hello ${userName.val()}!`);
+    $('#name').text(`Good Luck ${nameInserted}!`);
+    createBoard(numOfPairs);
     clearInputs();
   });
 
@@ -32,6 +42,7 @@ $(document).ready(function () {
   });
 
   // Handler Functions
+  // Timer functions
   const clearInputs = () => {
     userName.val('');
     pairs.val('');
@@ -65,4 +76,32 @@ $(document).ready(function () {
   const formatTime = time => {
     return time < 10 ? '0' + time : time;
   };
+
+  // Create board functions.
+
+  /*
+  TODO
+    1) Shuffle the amount of  cards (random number 0-20)
+    // the user ask for.
+
+    2) Display closed cards
+
+    3) Make the Cards Responsive when Play 
+
+  TODO
+
+  */
+  // Create Board:
+
+  const createBoard = numOfPairs => {
+    for (let i = 0; i < 21; i++) {
+      const img = document.createElement('img');
+      img.src = `./Cards/card-${i}.jpeg`;
+      img.width = 100;
+      img.height = 100;
+      gameBoard.append(img);
+    }
+  };
+
+  //
 });

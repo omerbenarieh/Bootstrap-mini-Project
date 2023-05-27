@@ -24,6 +24,7 @@ body {
 
 .hidden {
   opacity: 0;
+  display: none;
 }
 
 .pairs-input {
@@ -35,9 +36,7 @@ body {
   border-radius: 6px;
 }
 
-.pairs-input:focus {
-  outline: #27374d solid 4px;
-  font-size: 20px;
-  border: none;
-  transition: all 0.09s;
+#name {
+  font-family: Arial;
+  font-size: 25px;
 }

@@ -20,52 +20,85 @@
     <title>Memory Game</title>
   </head>
   <body>
-    <!-- Main Container -->
-    <div class="container d-flex justify-content-sm-around align-items-center">
+    <!-- Login Container -->
+    <div id="login-container" class="container">
+      <div class="row">
+        <div class="col d-flex justify-content-center align-items-center">
+          <form>
+            <div class="mb-4">
+              <!-- Label -->
+              <label for="username" class="form-label display-3 d-block p-3"
+                >Username</label
+              >
+              <!-- Username -->
+              <input
+                type="text"
+                class="form-control text-center p-3 mb-3"
+                id="username"
+                placeholder="Enter Your Name"
+              />
+            </div>
+
+            <!--Choose how many pairs  -->
+            <div class="d-flex justify-content-center align-items-center">
+              <label for="pairs" class="display-6">Pairs (2-30):</label>
+
+              <input
+                type="number"
+                id="pairs"
+                name="pairs"
+                min="2"
+                max="30"
+                class="text-center pairs-input form-control"
+              />
+            </div>
+
+            <!-- Start Game Button -->
+            <div class="m-4 text-center">
+              <button
+                id="start"
+                type="button"
+                class="btn btn-lg btn-success form-control p-3"
+              >
+                Start
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
       <!-- Form -->
-      <form>
-        <div class="mb-4">
-          <!-- Label -->
-          <label for="username" class="form-label display-3 d-block p-3"
-            >Username</label
-          >
-          <!-- Username -->
-          <input
-            type="text"
-            class="form-control text-center p-3 mb-3"
-            id="username"
-            placeholder="Enter Your Name"
-          />
-        </div>
-
-        <!--Choose how many pairs  -->
-        <div class="d-flex justify-content-center align-items-center">
-          <label for="pairs" class="display-6">Pairs (5-30):</label>
-
-          <input
-            type="number"
-            id="pairs"
-            name="pairs"
-            min="5"
-            max="30"
-            value="15"
-            class="text-center pairs-input"
-          />
-        </div>
-
-        <!-- Start Game Button -->
-        <div class="m-5 text-center">
-          <a href="#">
-            <button type="button" class="btn btn-lg btn-success p-3">
-              Click To Start
-            </button>
-          </a>
-        </div>
-      </form>
     </div>
 
-    <!-- Game Board -->
-    <div class="container game-board hidden"></div>
+    <div id="board-container" class="container">
+      <!-- Exit game button -->
+      <div class="row">
+        <div class="col d-flex justify-content-center">
+          <div class="m-4 text-center">
+            <button class="btn btn-lg btn-danger form-control p-3" id="exit">
+              Exit Game
+            </button>
+          </div>
+        </div>
+
+        <!-- Clock -->
+        <div class="col d-flex justify-content-center">
+          <div id="clock" class="m-4 text-center pt-4">Clock TODO</div>
+        </div>
+
+        <!-- Player name -->
+        <div class="col d-flex justify-content-center">
+          <div id="name" class="m-4 pt-3 text-center">Hello Omer</div>
+        </div>
+      </div>
+
+      <!-- Game Board -->
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <div class="game-board"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Scripts -->
     <script src="script.js"></script>
   </body>

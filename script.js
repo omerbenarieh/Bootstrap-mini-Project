@@ -1,6 +1,44 @@
 // Make sure that document is ready before manipulating the DOM.
 $('#board-container').hide();
 
+const options = {
+  // starting time
+  startValue: 0,
+
+  // max time
+  maxValue: 60,
+
+  // in milliseconds
+  counter: 1000,
+
+  // should the circles styling alters according to progress level
+  triggerPercentage: false,
+
+  // timer, progress or manual
+
+  type: 'timer',
+
+  // the width of the dial
+
+  dialWidth: 5,
+
+  // font size
+
+  fontSize: '20px',
+
+  // font color
+
+  fontColor: 'rgb(135, 206, 235)',
+
+  // skin name
+
+  skin: '',
+
+  // the size of the circle
+
+  size: '150px',
+};
+
 $(document).ready(function () {
   /*
   Stages:
@@ -27,6 +65,7 @@ $(document).ready(function () {
     loginContainer.slideUp('slow');
     boardContainer.slideDown('slow');
     $('#name').text(`Hello ${userName.val()}!`);
+    $('.myInstance').Circlebar(options);
     clearInputs();
   });
 
@@ -36,9 +75,4 @@ $(document).ready(function () {
     loginContainer.slideDown('slow');
     clearInputs();
   });
-
-  const clearInputs = () => {
-    userName.val('');
-    pairs.val('');
-  };
 });

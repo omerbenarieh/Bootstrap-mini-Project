@@ -30,13 +30,21 @@ body {
 .pairs-input {
   margin-left: 7px;
   padding: 5px;
-  font-size: 17px;
-  width: 75px;
-  height: 35px;
+  font-size: 20px;
+  width: 100px;
+  height: 50px;
   border-radius: 6px;
 }
 
 #name {
   font-family: Arial;
   font-size: 25px;
+  height: 40px;
+}
+
+.timer {
+  font-family: Arial;
+  font-size: 30px;
+  height: 40px;
+  color: #545b77;
 }

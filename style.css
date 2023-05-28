@@ -39,7 +39,6 @@ body {
 #name {
   font-family: Arial;
   font-size: 25px;
-  height: 40px;
 }
 
 .timer {
@@ -50,5 +49,9 @@ body {
 }
 
 .img-div {
-  display: inline-block;
+  height: 100px;
+  width: 100px;
+  border-radius: 10px;
+  border: solid;
+  margin: 3px;
 }

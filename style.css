@@ -55,3 +55,11 @@ body {
   border: solid;
   margin: 3px;
 }
+
+#start {
+  cursor: pointer;
+}
+
+#play-again {
+  cursor: pointer;
+}

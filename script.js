@@ -1,41 +1,42 @@
 // Make sure that document is ready before manipulating the DOM.
 
-// $('#login-container').hide();
-
 $('#board-container').hide();
 $('#winner-container').hide();
 $(document).ready(function () {
-  // Varibales declarations
+  const winnerContainer = $('#winner-container');
   const startBtn = $('#start');
-  const userName = $('#username');
-  const pairs = $('#pairs');
+  const playAgainBtn = $('#play-again');
   const exitBtn = $('#exit');
   const loginContainer = $('#login-container');
   const boardContainer = $('#board-container');
   const gameBoard = $('#game-board');
 
-  // Start Game Button
-  startBtn.click(e => {
-    e.preventDefault();
-    const nameInserted = userName.val();
-    const numOfPairs = pairs.val();
+  const checkUserInput = (userName, numOfPairs) => {
     if (
-      nameInserted.length === 0 ||
-      pairs.val().length === 0 ||
+      userName.length === 0 ||
+      numOfPairs.length === 0 ||
       numOfPairs < 2 ||
       numOfPairs > 21
     ) {
       return alert('Please enter a valid name and valid number of Pairs.');
     }
+    return true;
+  };
+  // Start Game Button
+  startBtn.click(e => {
+    e.preventDefault();
+    const userName = $('#username').val();
+    const numOfPairs = $('#pairs').val();
+    if (checkUserInput(userName, numOfPairs)) {
+      startTimer(updateTimer);
+      // close login form
+      loginContainer.slideUp('fast');
 
-    startTimer(updateTimer);
-    // close login form
-    loginContainer.slideUp('fast');
+      $('#name').text(`Good Luck ${userName}!`);
 
-    $('#name').text(`Good Luck ${nameInserted}!`);
-
-    const game = new Game(nameInserted, numOfPairs, gameBoard);
-    game.start();
+      const game = new Game(userName, numOfPairs, gameBoard);
+      game.start();
+    }
   });
 
   // Exit Game Button
@@ -45,6 +46,20 @@ $(document).ready(function () {
     loginContainer.slideDown('slow');
     resetTimer();
     clearInputs();
+  });
+
+  // TODO Fix playAgainBtn
+  playAgainBtn.click(e => {
+    e.preventDefault();
+    const userName = $('#username').val();
+    const numOfPairs = $('#pairs').val();
+
+    winnerContainer.slideUp('fast');
+    $('#name').text(`Good Luck ${userName}!`);
+    const game = new Game(userName, numOfPairs, gameBoard);
+    game.resetGame();
+    game.start();
+    resetTimer();
   });
 
   class Game {
@@ -68,12 +83,16 @@ $(document).ready(function () {
     setUpGame() {
       this.cardList = this.createCards();
       this.arrangeBoard(this.cardList);
+      this.showBoard();
+    }
+
+    showBoard() {
       $('#login-container').slideUp('fast');
       $('#board-container').slideDown('slow');
     }
 
     createCards() {
-      const symbols = this.generateSymobls(this.numOfPairs);
+      const symbols = this.generateSymbols(this.numOfPairs);
 
       symbols.forEach(sym => {
         const card_1 = new Card(this.generateCardId(), sym, this.cardClicked);
@@ -139,7 +158,7 @@ $(document).ready(function () {
     }
 
     // Returns the card object instance based on the event.
-    generateSymobls(symNumber) {
+    generateSymbols(symNumber) {
       const symbols = [];
       for (let i = 0; i < symNumber; i++) {
         let symbol = this.getRandomSymbol();
@@ -164,6 +183,11 @@ $(document).ready(function () {
       shuffeledCards.forEach(card => {
         card.render(this.divToRenderInside);
       });
+    }
+    // TODO FIX method
+    resetGame() {
+      this.cardList = [];
+      gameBoard.innerHTML = '';
     }
 
     shuffle(cards) {
@@ -212,8 +236,8 @@ $(document).ready(function () {
   /// Timer functions //
   //////////////////////
   const clearInputs = () => {
-    userName.val('');
-    pairs.val('');
+    $('#username').val('');
+    $('#pairs').val('');
   };
 
   let timerInterval;

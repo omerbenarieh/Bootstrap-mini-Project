@@ -1,65 +1,15 @@
 // Make sure that document is ready before manipulating the DOM.
-
 $('#board-container').hide();
 $('#winner-container').hide();
+
 $(document).ready(function () {
-  const winnerContainer = $('#winner-container');
-  const startBtn = $('#start');
-  const playAgainBtn = $('#play-again');
-  const exitBtn = $('#exit');
-  const loginContainer = $('#login-container');
-  const boardContainer = $('#board-container');
-  const gameBoard = $('#game-board');
-
-  const checkUserInput = (userName, numOfPairs) => {
-    if (
-      userName.length === 0 ||
-      numOfPairs.length === 0 ||
-      numOfPairs < 2 ||
-      numOfPairs > 21
-    ) {
-      return alert('Please enter a valid name and valid number of Pairs.');
-    }
-    return true;
-  };
   // Start Game Button
-  startBtn.click(e => {
+  $('#start').click(e => {
     e.preventDefault();
     const userName = $('#username').val();
     const numOfPairs = $('#pairs').val();
-    if (checkUserInput(userName, numOfPairs)) {
-      startTimer(updateTimer);
-      // close login form
-      loginContainer.slideUp('fast');
-
-      $('#name').text(`Good Luck ${userName}!`);
-
-      const game = new Game(userName, numOfPairs, gameBoard);
-      game.start();
-    }
-  });
-
-  // Exit Game Button
-  exitBtn.click(e => {
-    e.preventDefault();
-    boardContainer.slideUp('fast');
-    loginContainer.slideDown('slow');
-    resetTimer();
-    clearInputs();
-  });
-
-  // TODO Fix playAgainBtn
-  playAgainBtn.click(e => {
-    e.preventDefault();
-    const userName = $('#username').val();
-    const numOfPairs = $('#pairs').val();
-
-    winnerContainer.slideUp('fast');
-    $('#name').text(`Good Luck ${userName}!`);
-    const game = new Game(userName, numOfPairs, gameBoard);
-    game.resetGame();
+    const game = new Game(userName, numOfPairs, $('#game-board'));
     game.start();
-    resetTimer();
   });
 
   class Game {
@@ -74,21 +24,22 @@ $(document).ready(function () {
       this.generateCardId = this.generateCardId.bind(this);
       this.cardClicked = this.cardClicked.bind(this);
       this.finishedGame = this.finishedGame.bind(this);
+      this.restartGame = this.restartGame.bind(this);
+      this.updateClock = this.updateClock.bind(this);
+      this.exitGame = this.exitGame.bind(this);
     }
 
     start() {
-      this.setUpGame();
+      if (this.checkUserInput(this.userName, this.numOfPairs)) {
+        this.setUpGame();
+      }
     }
 
     setUpGame() {
       this.cardList = this.createCards();
       this.arrangeBoard(this.cardList);
+      this.startClock();
       this.showBoard();
-    }
-
-    showBoard() {
-      $('#login-container').slideUp('fast');
-      $('#board-container').slideDown('slow');
     }
 
     createCards() {
@@ -103,8 +54,131 @@ $(document).ready(function () {
       return this.cardList;
     }
 
+    arrangeBoard(cards) {
+      const shuffeledCards = this.shuffle(cards);
+      this.renderCards(shuffeledCards);
+    }
+
+    startClock() {
+      this.clockInterval;
+      this.totalSeconds = 0;
+      this.clockInterval = setInterval(this.updateClock, 1000);
+    }
+
+    showBoard() {
+      this.hideContainer($('#login-container'));
+      this.hideContainer($('#winner-container'));
+      this.displayContainer($('#board-container'));
+      $('#exit').click(this.exitGame);
+    }
+    // Returns the card object instance based on the event.
+    generateSymbols(symNumber) {
+      const emojis = [
+        '🍕',
+        '🍔',
+        '🌭',
+        '🍟',
+        '🍗',
+        '🍖',
+        '🌮',
+        '🌯',
+        '🍝',
+        '🍜',
+        '🍲',
+        '🍛',
+        '🍣',
+        '🍱',
+        '🥟',
+        '🍤',
+        '🍙',
+        '🍚',
+        '🍘',
+        '🍥',
+        '🍧',
+        '🍨',
+        '🍦',
+        '🍰',
+        '🎂',
+        '🍫',
+        '🍩',
+        '🍪',
+        '🍮',
+        '🍭',
+      ];
+      const symbols = [];
+      for (let i = 0; i < symNumber; i++) {
+        let emoji = this.getRandomEmoji(emojis);
+        while (symbols.includes(emoji)) {
+          emoji = this.getRandomEmoji(emojis);
+        }
+        symbols.push(emoji);
+      }
+      return symbols;
+    }
+
+    getRandomEmoji(emojis) {
+      const index = Math.floor(Math.random() * emojis.length);
+      return emojis[index];
+    }
+
     generateCardId() {
       return this.cardList.length + 1;
+    }
+
+    shuffle(cards) {
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      return cards;
+    }
+
+    renderCards(shuffeledCards) {
+      shuffeledCards.forEach(card => {
+        card.render(this.divToRenderInside);
+      });
+    }
+
+    stopClock() {
+      clearInterval(this.clockInterval);
+    }
+
+    resetClock() {
+      this.stopClock();
+      this.totalSeconds = 0;
+      this.updateClock();
+    }
+
+    checkUserInput(userName, numOfPairs) {
+      if (
+        userName.length === 0 ||
+        numOfPairs.length === 0 ||
+        numOfPairs < 2 ||
+        numOfPairs > 21
+      ) {
+        return alert('Please enter a valid name and valid number of Pairs.');
+      }
+      return true;
+    }
+    updateClock() {
+      const minutes = Math.floor(this.totalSeconds / 60);
+      const seconds = this.totalSeconds % 60;
+      const formattedTime = `${this.formatTime(minutes)}:${this.formatTime(
+        seconds
+      )}`;
+      $('#clock').text(formattedTime);
+      this.totalSeconds++;
+    }
+
+    formatTime(time) {
+      return time < 10 ? '0' + time : time;
+    }
+
+    exitGame(e) {
+      e.preventDefault();
+      this.clearDOM();
+      this.showLoginForm();
+      this.resetClock();
     }
 
     determinedCard(e) {
@@ -142,10 +216,46 @@ $(document).ready(function () {
     }
 
     finishedGame() {
-      $('#board-container').slideUp('fast');
-      $('#winner-name').text(`${this.userName} is The Winner!`);
-      $('#winner-time').text(`Your time is: ${$('#clock').text()}`);
-      $('#winner-container').slideDown('slow');
+      this.hideContainer($('#board-container'));
+      this.setContainer($('#winner-name'), `${this.userName} is The Winner!`);
+      this.setContainer(
+        $('#winner-time'),
+        `Your time is: ${$('#clock').text()}`
+      );
+      this.displayContainer($('#winner-container'));
+      $('#play-again').click(this.restartGame);
+    }
+
+    displayContainer(container) {
+      container.slideDown('slow');
+    }
+    hideContainer(container) {
+      container.slideUp('fast');
+    }
+
+    setContainer(container, text) {
+      container.text(text);
+    }
+
+    restartGame(e) {
+      e.preventDefault();
+      this.clearDOM();
+      this.showLoginForm();
+      this.resetClock();
+    }
+
+    clearDOM() {
+      this.divToRenderInside.empty();
+      // Clear user inputs
+      $('#username').val('');
+      $('#pairs').val('');
+      this.resetClock();
+    }
+
+    showLoginForm() {
+      this.hideContainer($('#winner-container'));
+      this.hideContainer($('#board-container'));
+      this.displayContainer($('#login-container'));
     }
 
     gameEnded() {
@@ -157,45 +267,8 @@ $(document).ready(function () {
       return true;
     }
 
-    // Returns the card object instance based on the event.
-    generateSymbols(symNumber) {
-      const symbols = [];
-      for (let i = 0; i < symNumber; i++) {
-        let symbol = this.getRandomSymbol();
-        while (symbols.includes(symbol)) {
-          symbol = this.getRandomSymbol();
-        }
-        symbols.push(symbol);
-      }
-      return symbols;
-    }
-
     getRandomSymbol() {
       return Math.floor(Math.random() * 30) + 1;
-    }
-
-    arrangeBoard(cards) {
-      const shuffeledCards = this.shuffle(cards);
-      this.renderCards(shuffeledCards);
-    }
-
-    renderCards(shuffeledCards) {
-      shuffeledCards.forEach(card => {
-        card.render(this.divToRenderInside);
-      });
-    }
-    // TODO FIX method
-    resetGame() {
-      this.cardList = [];
-      gameBoard.innerHTML = '';
-    }
-
-    shuffle(cards) {
-      for (let i = cards.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [cards[i], cards[j]] = [cards[j], cards[i]];
-      }
-      return cards;
     }
   }
 
@@ -209,9 +282,11 @@ $(document).ready(function () {
     }
 
     createCardElement() {
-      const card = document.createElement('text');
-      card.innerText = '?';
+      const card = document.createElement('div');
+      card.innerText = '❓';
       card.id = this.id;
+      card.style.cursor = 'pointer';
+      card.className = 'card';
       card.addEventListener('click', this.cardClickedHandler);
       return card;
     }
@@ -225,47 +300,8 @@ $(document).ready(function () {
       if (this.flipped) {
         this.cardElement.innerText = this.sym;
       } else {
-        this.cardElement.innerText = '?';
+        this.cardElement.innerText = '❓';
       }
     }
   }
-
-  // Handler Functions
-
-  //////////////////////
-  /// Timer functions //
-  //////////////////////
-  const clearInputs = () => {
-    $('#username').val('');
-    $('#pairs').val('');
-  };
-
-  let timerInterval;
-  let totalSeconds = 0;
-
-  const startTimer = () => {
-    timerInterval = setInterval(updateTimer, 1000);
-  };
-
-  const stopTimer = () => {
-    clearInterval(timerInterval);
-  };
-
-  const resetTimer = () => {
-    stopTimer();
-    totalSeconds = 0;
-    updateTimer();
-  };
-
-  const updateTimer = () => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const formattedTime = formatTime(minutes) + ':' + formatTime(seconds);
-    $('#clock').text(formattedTime);
-    totalSeconds++;
-  };
-
-  const formatTime = time => {
-    return time < 10 ? '0' + time : time;
-  };
 });

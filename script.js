@@ -6,9 +6,11 @@ $(document).ready(function () {
   // Start Game Button
   $('#start').click(e => {
     e.preventDefault();
-    const userName = $('#username').val();
-    const numOfPairs = $('#pairs').val();
-    const game = new Game(userName, numOfPairs, $('#game-board'));
+    const game = new Game(
+      $('#username').val(),
+      $('#pairs').val(),
+      $('#game-board')
+    );
     game.start();
   });
 
@@ -27,6 +29,12 @@ $(document).ready(function () {
       this.restartGame = this.restartGame.bind(this);
       this.updateClock = this.updateClock.bind(this);
       this.exitGame = this.exitGame.bind(this);
+
+      this.containers = {
+        loginContainer: $('#login-container'),
+        boardContainer: $('#board-container'),
+        winnerContainer: $('#winner-container'),
+      };
     }
 
     start() {
@@ -67,9 +75,9 @@ $(document).ready(function () {
     }
 
     showBoard() {
-      this.hideContainer($('#login-container'));
-      this.hideContainer($('#winner-container'));
-      this.displayContainer($('#board-container'));
+      this.hideContainer(this.containers.loginContainer);
+      this.hideContainer(this.containers.winnerContainer);
+      this.displayContainer(this.containers.boardContainer);
       $('#exit').click(this.exitGame);
     }
     // Returns the card object instance based on the event.
@@ -230,13 +238,13 @@ $(document).ready(function () {
     }
 
     finishedGame() {
-      this.hideContainer($('#board-container'));
+      this.hideContainer(this.containers.boardContainer);
       this.setContainer($('#winner-name'), `${this.userName} is The Winner!`);
       this.setContainer(
         $('#winner-time'),
         `Your time is: ${$('#clock').text()}`
       );
-      this.displayContainer($('#winner-container'));
+      this.displayContainer(this.containers.winnerContainer);
       $('#play-again').click(this.restartGame);
     }
 
@@ -267,9 +275,9 @@ $(document).ready(function () {
     }
 
     showLoginForm() {
-      this.hideContainer($('#winner-container'));
-      this.hideContainer($('#board-container'));
-      this.displayContainer($('#login-container'));
+      this.hideContainer(this.containers.winnerContainer);
+      this.hideContainer(this.containers.boardContainer);
+      this.displayContainer(this.containers.loginContainer);
     }
 
     gameEnded() {

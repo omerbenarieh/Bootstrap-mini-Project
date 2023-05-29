@@ -10,7 +10,6 @@ $(document).ready(function () {
     const numOfPairs = $('#pairs').val();
     const game = new Game(userName, numOfPairs, $('#game-board'));
     game.start();
-
   });
 
   class Game {
@@ -196,25 +195,38 @@ $(document).ready(function () {
     cardClicked(e) {
       const card = this.determinedCard(e);
       if (card.flipped) return;
+
       card.flip();
 
       if (this.inMiddleOfTurn) {
         if (card.sym === this.openedCard.sym) {
           if (this.gameEnded()) {
-            setTimeout(this.finishedGame, 500);
+            setTimeout(this.finishedGame, 700);
           }
+          this.addOutLine(card.cardElement, this.openedCard.cardElement);
         } else {
           // Flip them back
-          card.flip();
-          this.openedCard.flip();
+          setTimeout(() => {
+            card.flip();
+            this.openedCard.flip();
+            this.openedCard = null;
+          }, 700);
         }
-        // Reset state
-        this.openedCard = null;
       } else {
         this.openedCard = card;
       }
 
       this.inMiddleOfTurn = !this.inMiddleOfTurn;
+    }
+
+    addOutLine(card1, card2) {
+      card1.classList.add('big-card');
+      card2.classList.add('big-card');
+    }
+
+    removeCardEffect(card1, card2) {
+      card1.classList.remove('big-card');
+      card2.classList.remove('big-card');
     }
 
     finishedGame() {
@@ -300,12 +312,10 @@ $(document).ready(function () {
       this.flipped = !this.flipped;
       if (this.flipped) {
         this.cardElement.innerText = this.sym;
-        this.cardElement.classList.add('flipped');
       } else {
         this.cardElement.innerText = '❓';
-        this.cardElement.classList.remove('flipped');
       }
+      this.cardElement.classList.toggle('flipped');
     }
   }
-
 });

@@ -10,6 +10,7 @@ $(document).ready(function () {
     const numOfPairs = $('#pairs').val();
     const game = new Game(userName, numOfPairs, $('#game-board'));
     game.start();
+
   });
 
   class Game {
@@ -33,6 +34,7 @@ $(document).ready(function () {
       if (this.checkUserInput(this.userName, this.numOfPairs)) {
         this.setUpGame();
       }
+      this.setContainer($('#name'), `Hello ${this.userName} Good Luck`);
     }
 
     setUpGame() {
@@ -154,7 +156,7 @@ $(document).ready(function () {
         userName.length === 0 ||
         numOfPairs.length === 0 ||
         numOfPairs < 2 ||
-        numOfPairs > 21
+        numOfPairs > 31
       ) {
         return alert('Please enter a valid name and valid number of Pairs.');
       }
@@ -271,7 +273,6 @@ $(document).ready(function () {
       return Math.floor(Math.random() * 30) + 1;
     }
   }
-
   class Card {
     constructor(id, sym, cardClickedHandler) {
       this.id = id;
@@ -299,9 +300,12 @@ $(document).ready(function () {
       this.flipped = !this.flipped;
       if (this.flipped) {
         this.cardElement.innerText = this.sym;
+        this.cardElement.classList.add('flipped');
       } else {
         this.cardElement.innerText = '❓';
+        this.cardElement.classList.remove('flipped');
       }
     }
   }
+
 });

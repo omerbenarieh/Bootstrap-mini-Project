@@ -5,6 +5,7 @@
 body {
   background-color: #dde6ed;
 }
+
 .form-select {
   height: 50px;
   font-size: 17px;
@@ -76,4 +77,40 @@ body {
 .card:hover {
   background-color: #545b77;
   transition: all 0.2s;
+}
+
+.card.flipped {
+  background-color: #ffffff;
+  color: #000000;
+  transform: rotateY(180deg);
+}
+
+#winner-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 150px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#winner-name {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#winner-time {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#play-again {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 }
